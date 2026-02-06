@@ -93,20 +93,23 @@ Carrier "F9" has many distances but they are all equal, hence standard deviation
 #Question 4
 
 ```{r}
+# Flitering Flights for relevant columns
 flights_dep_delay <- flights |> 
   select(month,dep_delay,carrier)
 ```
 
 
 ```{r}
+# Averages per carrier per month
 flights_dep_delay_averages <- flights_dep_delay |> 
   group_by(month,carrier) |> 
-  summarise(avg_dep_delay = mean(dep_delay))
+  summarise(avg_dep_delay = mean(dep_delay,na.rm = TRUE))
 flights_dep_delay_averages
 ```
 
 
 ```{r}
+# Dataframe transformed from long to wide
 flights_dep_delay_wide <- flights_dep_delay_averages |> 
   pivot_wider(
     names_from = carrier,
@@ -115,10 +118,11 @@ flights_dep_delay_wide <- flights_dep_delay_averages |>
 flights_dep_delay_wide
 ```
 
+#Question 5
 ```{r}
-flights_dep_delay |> 
-  filter(carrier == "B6")
+
 ```
+
 
 
 
