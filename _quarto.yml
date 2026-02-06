@@ -1,0 +1,25 @@
+project:
+  type: book
+  title: Quarto Project
+  output-dir: _site
+  
+website: 
+  navbar: 
+    left: 
+      - href: index.qmd
+        text: Home
+      - href: Prac_4.qmd
+        text: Second page
+
+book:
+  chapters: 
+    - index.qmd
+    - Prac_4.qmd
+    
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-location: left
+    theme: cosmo
+  
