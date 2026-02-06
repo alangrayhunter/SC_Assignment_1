@@ -1,5 +1,139 @@
 ---
-title: "Prac_4"
+title: "Practical 4"
 format: html
 ---
+
+# Question 1
+
+```{r}
+# Import Packages
+
+# Install dplyr if not already installed
+if (!requireNamespace("dplyr", quietly = TRUE)) {
+  install.packages("dplyr") 
+} 
+library(dplyr)
+
+# Install tidyverse if not already installed
+if (!requireNamespace("tidyverse", quietly = TRUE)) {
+  install.packages("tidyverse")
+}
+library(tidyverse)
+
+# Install nycflights13 for flight data
+if (!requireNamespace("nycflights13", quietly = TRUE)) {
+  install.packages("nycflights13")
+}
+```
+
+```{r}
+# load nycflights13  flight data
+data(flights, package = "nycflights13") 
+flights <- as_tibble(flights)
+flights
+```
+
+# Question 2
+
+
+
+```{r}
+# Filter flights by month = 1 (January)
+ flights_jan <- flights |> 
+   filter(month == 1) |> 
+   select(carrier,distance)
+```
+
+```{r}
+# Group the January flights by carrier
+flights_jan_by_carrier <- flights_jan |> 
+  group_by(carrier) |> 
+  summarise(Mean = mean(distance), SD = sd(distance))
+```
+
+
+#Question 3
+
+
+```{r}
+# Filtering the January Flights to see all flights from the two carriers of interest
+flights_jan |> 
+  filter(carrier == "OO")
+flights_jan |> 
+  filter(carrier == "F9")
+```
+
+We can see that the carrier 00 has only one distance recorded in January, and that F9 has many, but all of them are equal to 1620.
+
+```{r}
+# Make objects containing all the rows of flight distances from each carrier
+distance.00 <- flights_jan |> 
+  filter(carrier == "OO") |> 
+    select(distance)
+distance.F9 <- flights_jan |> 
+  filter(carrier == "F9") |> 
+    select(distance)
+```
+
+```{r}
+# Find the standard deviation of each of the carriers January flights.
+sd.00 <- distance.00 |> 
+  summarise(SD = sd(distance))
+sd.F9 <-  distance.F9 |> 
+  summarise(SD = sd(distance))
+sd.00
+sd.F9
+```
+
+Carrier "00" only has one distance (or row), and so cannot have a standard deviation, hence the standard deviation is "na".
+
+Carrier "F9" has many distances but they are all equal, hence standard deviation is equal to 0.
+
+
+#Question 4
+
+```{r}
+flights_dep_delay <- flights |> 
+  select(month,dep_delay,carrier)
+```
+
+
+```{r}
+flights_dep_delay_averages <- flights_dep_delay |> 
+  group_by(month,carrier) |> 
+  summarise(avg_dep_delay = mean(dep_delay))
+flights_dep_delay_averages
+```
+
+
+```{r}
+flights_dep_delay_wide <- flights_dep_delay_averages |> 
+  pivot_wider(
+    names_from = carrier,
+    values_from = avg_dep_delay
+  )
+flights_dep_delay_wide
+```
+
+```{r}
+flights_dep_delay |> 
+  filter(carrier == "B6")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
