@@ -22,4 +22,5 @@ format:
     toc-depth: 3
     toc-location: left
     theme: cosmo
+    number-sections: false
   

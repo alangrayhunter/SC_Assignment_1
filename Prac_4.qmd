@@ -4,6 +4,8 @@ format: html
 ---
 
 ```{r}
+#| output: false
+
 # Import Packages
 
 # Install dplyr if not already installed
@@ -30,7 +32,7 @@ if (!requireNamespace("remotes", quietly = TRUE)) {
 remotes::install_github("SATVILab/UtilsDataRSV")
 ```
 
-# Question 1
+## Question 1
 
 
 ```{r}
@@ -40,7 +42,7 @@ flights <- as_tibble(flights)
 flights
 ```
 
-# Question 2
+## Question 2
 
 
 
@@ -49,6 +51,7 @@ flights
  flights_jan <- flights |> 
    filter(month == 1) |> 
    select(carrier,distance)
+flights_jan
 ```
 
 ```{r}
@@ -56,11 +59,11 @@ flights
 flights_jan_by_carrier <- flights_jan |> 
   group_by(carrier) |> 
   summarise(Mean = mean(distance), SD = sd(distance))
+flights_jan_by_carrier
 ```
 
 
-#Question 3
-
+## Question 3
 
 ```{r}
 # Filtering the January Flights to see all flights from the two carriers of interest
@@ -80,6 +83,8 @@ distance.00 <- flights_jan |>
 distance.F9 <- flights_jan |> 
   filter(carrier == "F9") |> 
     select(distance)
+distance.00
+distance.F9
 ```
 
 ```{r}
@@ -97,12 +102,13 @@ Carrier "00" only has one distance (or row), and so cannot have a standard devia
 Carrier "F9" has many distances but they are all equal, hence standard deviation is equal to 0.
 
 
-#Question 4
+## Question 4
 
 ```{r}
 # Flitering Flights for relevant columns
 flights_dep_delay <- flights |> 
   select(month,dep_delay,carrier)
+flights_dep_delay
 ```
 
 
@@ -125,7 +131,7 @@ flights_dep_delay_wide <- flights_dep_delay_averages |>
 flights_dep_delay_wide
 ```
 
-#Question 5
+## Question 5
 
 ```{r}
 # Identify proportion of flights leaving late but arriving on time or earlier
@@ -137,7 +143,7 @@ prop_late_but_on_time
 ```
 The proportion of flights out of the total flights that were delayed but still arrived on time is 0.1081096 or approximately 11%.
 
-# Question 6
+## Question 6
 
 ```{r}
 # load nycflights13 airlines data
@@ -146,7 +152,7 @@ airlines <- as_tibble(airlines)
 airlines
 ```
 
-## 6.1
+### 6.1
 
 ```{r}
 # Identify unique combinations or origin, dest, and carrier
@@ -166,7 +172,7 @@ flight_routes_multiple_airlines
 ```
 
 
-## 6.2
+### 6.2
 
 ```{r}
 # Identfiy all flights along the shared routes from Question 6.1
@@ -193,7 +199,7 @@ average_delay_with_airline_name <- average_delay |>
 average_delay_with_airline_name
 ```
 
-## 6.3
+### 6.3
 
 
 ```{r}
@@ -225,7 +231,7 @@ max_and_min_delays <- max_delay |>
 max_and_min_delays
 ```
 
-## 6.4
+### 6.4
 
 ```{r}
 # Added "difference" column to measure difference between the best and worst airlines per route
@@ -243,7 +249,7 @@ greatest_diff
 ```
 The route as per the above is JFK to ATL.
 
-## 6.5
+### 6.5
 
 ```{r}
 # Filtering for only the worst airline's flights along the route with the biggest difference
@@ -270,7 +276,7 @@ _flights$arr_delay" plot above. On the other hand, the airline EV or ExpressJet 
 
 Having only a single flight results in a very high risk of an outlier skewing the results. In this case, 9E has a good average delay time, and due to EV's one flight being so delayed, the difference between their averages is the biggest.
 
-# Question 7
+## Question 7
 
 ```{r}
 # Importing Question 7 code into "data" object
