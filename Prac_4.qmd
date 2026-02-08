@@ -136,10 +136,22 @@ prop_late_but_on_time <- flights |>
 
 prop_late_but_on_time
 ```
+The proportion of flights out of the total flights that were delayed but still arrived on time is 0.1081096 or approximately 11%.
+
+# Question 6
 
 
 
+```{r}
+# load nycflights13 airlines data
+data(airlines, package = "nycflights13") 
+airlines <- as_tibble(airlines)
+airlines
+```
 
+```{r}
+
+```
 
 
 
