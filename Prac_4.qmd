@@ -4,9 +4,7 @@ format: html
 ---
 
 ```{r}
-#| output: false
-
-# Import Packages if needed and without printing output
+# Import Packages if needed
 
 # Install dplyr if not already installed
 if (!requireNamespace("dplyr", quietly = TRUE)) {

@@ -1,28 +1,23 @@
 project:
-  type: book
-  title: Quarto Project
+  type: site
+  title: "My Quarto Site"
   output-dir: _site
-  
-website: 
-  navbar: 
-    left: 
+
+website:
+  navbar:
+    left:
       - href: index.qmd
         text: Home
+      - href: Prac_1.qmd
+        text: Practical 1
+      - href: Prac_3.qmd
+        text: Practical 3
       - href: Prac_4.qmd
-        text: Second page
+        text: Practical 4
 
-book:
-  chapters: 
-    - index.qmd
-    - Prac_1.qmd
-    - Prac_3.qmd
-    - Prac_4.qmd
-    
 format:
   html:
     toc: true
     toc-depth: 3
     toc-location: left
     theme: cosmo
-    number-sections: false
-  

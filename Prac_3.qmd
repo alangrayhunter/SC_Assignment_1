@@ -4,8 +4,8 @@ format: html
 ---
 
 ```{r}
-# Import car library for question 5, without output
-#| output: false
+# Import car library for question 5
+
 library(car)
 ```
 
@@ -46,7 +46,7 @@ normal_data_matrix <- matrix(rnorm(1000*1000), nrow = 1000, ncol = 1000)
 ```
 
 ```{r}
-# found upper and lower probabilty bands of the envelop
+# found upper and lower probability bands for the envelop
 sorted_normal_data_matrix <- t(apply(normal_data_matrix,1,sort))
 upper_ci <- matrix(nrow = 1000)
 lower_ci <- matrix(nrow = 1000)
