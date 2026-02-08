@@ -149,19 +149,112 @@ airlines <- as_tibble(airlines)
 airlines
 ```
 
-```{r}
+## 6.1
 
+```{r}
+flights_routes <- flights |> 
+  select(origin,dest,carrier) |>
+  distinct() |> 
+  group_by(origin,dest)
+flights_routes
+```
+
+```{r}
+flight_routes_multiple_airlines <- flights_routes |> 
+  count(origin,dest,name = "number_of_airlines") |> 
+  filter(number_of_airlines>1)
+flight_routes_multiple_airlines
 ```
 
 
+## 6.2
+
+```{r}
+flights_multiple_airlines <- flights |>
+  select(origin,dest,carrier,arr_delay) |>
+  group_by(origin,dest,carrier) |> 
+  semi_join(flight_routes_multiple_airlines,join_by(origin == origin, dest == dest)) |> 
+  summarise
+flights_multiple_airlines
+```
 
 
+```{r}
+average_delay <- flights_multiple_airlines |> 
+  summarise(mean_delay = mean(arr_delay,na.rm=TRUE))
+average_delay
+```
 
 
+```{r}
+average_delay_with_airline_name <- average_delay |> 
+  left_join(airlines, by = join_by(carrier))
+average_delay_with_airline_name
+```
+
+## 6.3
 
 
+```{r}
+max_delay <- average_delay_with_airline_name |> 
+  group_by(origin,dest) |> 
+  slice_max(mean_delay)
+max_delay
+```
+
+```{r}
+min_delay <- average_delay_with_airline_name |> 
+  group_by(origin,dest) |> 
+  slice_min(mean_delay)
+min_delay
+```
+
+```{r}
+max_and_min_delays <- max_delay |> 
+  left_join(min_delay,by = join_by(origin, dest)) |> 
+  rename(max_carrier = carrier.x,
+         max_mean_delay = mean_delay.x,
+         max_name=name.x,
+         min_carrier = carrier.y,
+         min_mean_delay = mean_delay.y,
+         min_name = name.y)
+max_and_min_delays
+```
+
+## 6.4
+
+```{r}
+differences <- max_and_min_delays |> 
+  mutate(difference = max_mean_delay - min_mean_delay) |> 
+  ungroup()
+differences
+```
+```{r}
+greatest_diff <- differences |> 
+  slice_max(difference)
+greatest_diff
+```
 
 
+## 6.5
 
+```{r}
+max_diff_flights <- flights |> 
+  filter(origin == "JFK", dest == "ATL", carrier == "EV")
+max_diff_flights
+```
+```{r}
+min_diff_flights <- flights |> 
+  filter(origin == "JFK", dest == "ATL", carrier == "9E")
+min_diff_flights
+```
 
+```{r}
+hist(max_diff_flights$arr_delay)
+hist(min_diff_flights$arr_delay)
+```
 
+The difference arises due to the following. Firstly, on the JFK to ATL route, the airline 9E or Endeavor Air Inc, has many flights along this route with delays that appear to be normally distributed with a mean around 0, which can be seen in the "Histogram of min_diff
+_flights$arr_delay" plot above. On the other hand, the airline EV or ExpressJet Airlines only has one flight along the same route. In addition, that single ExpressJet Airlines flight had a very high arr_delay of 128, much higher than the maximum Endeavor Air delay of 55.
+
+Having only a single flight results in a very high risk of an outlier skewing the results. In this case, 9E has a good average delay time, and due to EV's one flight being so delayed, the difference between their averages is the biggest.
