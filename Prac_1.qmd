@@ -1,0 +1,92 @@
+---
+title: "Practical 1"
+format: html
+---
+
+## Question 1
+
+```{r}
+# Load airquality data
+airquality <- airquality
+class(airquality)
+```
+```{r}
+# which returns the indices which meet a certain condition
+a <- c()
+for (col in 1:ncol(airquality)){
+  a <- c(a, which(is.na(airquality[, col])))
+}
+a <- sort(unique(a))
+a
+```
+
+The above are all the rows that contain "na" values.
+
+Alternatively, the same can be achieved by finding all rows that are NOT all non-na values:
+```{r}
+# complete.cases provides a boolean for whether the whole observation is NA free
+b <- which(!complete.cases(airquality))
+print(b)
+```
+
+## Question 2
+
+```{r}
+# Remove all ozone values with na values
+clean_ozone <- na.omit(airquality$Ozone)
+```
+
+```{r}
+# Find summary statistics of clean_ozone
+min(clean_ozone); max(clean_ozone); mean(clean_ozone); sd(clean_ozone)
+```
+
+```{r}
+# Remove all temp values with na values
+clean_temp <- na.omit(airquality$Temp)
+```
+
+```{r}
+# Find summary statistics of clean_temp
+min(clean_temp); max(clean_temp); mean(clean_temp); sd(clean_temp)
+```
+
+## Question 3
+
+```{r}
+# Creating X and Y variables
+cars_df <- cars
+speed <- cars_df$speed
+x <- cbind(1, speed)
+y <- cars_df$dist
+cars_df
+speed
+x
+y
+```
+```{r}
+# Calculating transpose of x and its inverse 
+xt <- t(x)
+inv_xt.x <- solve(xt%*%x)
+xt
+inv_xt.x
+```
+
+```{r}
+# Calculating parameter estimates of B_hat
+B_hat <- inv_xt.x %*% xt %*% y
+B_hat
+```
+
+## Question 4
+
+```{r}
+# Linear Model to find actual estimates of B_hat
+lm <- lm(dist ~ speed, data = cars)
+summary(lm)
+```
+
+```{r}
+# B_hat coefficents
+lm$coefficients
+```
