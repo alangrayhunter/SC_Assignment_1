@@ -3,8 +3,6 @@ title: "Practical 4"
 format: html
 ---
 
-# Question 1
-
 ```{r}
 # Import Packages
 
@@ -24,7 +22,16 @@ library(tidyverse)
 if (!requireNamespace("nycflights13", quietly = TRUE)) {
   install.packages("nycflights13")
 }
+
+# Install remotes package
+if (!requireNamespace("remotes", quietly = TRUE)) {
+  install.packages("remotes")
+}
+remotes::install_github("SATVILab/UtilsDataRSV")
 ```
+
+# Question 1
+
 
 ```{r}
 # load nycflights13  flight data
@@ -119,28 +126,18 @@ flights_dep_delay_wide
 ```
 
 #Question 5
-```{r}
-flights_arrival_times <- flights |> 
-  select(dep_delay,arr_delay) |> 
-  filter(dep_delay > 0)|>
-  filter(arr_delay <= 0)
-flights_arrival_times
-```
-
 
 ```{r}
+# Identify proportion of flights leaving late but arriving on time or earlier
 prop_late_but_on_time <- flights |>
   summarise(
     proportion = mean(dep_delay > 0 & arr_delay <= 0, na.rm = TRUE)
   )
-
 prop_late_but_on_time
 ```
 The proportion of flights out of the total flights that were delayed but still arrived on time is 0.1081096 or approximately 11%.
 
 # Question 6
-
-
 
 ```{r}
 # load nycflights13 airlines data
@@ -152,6 +149,7 @@ airlines
 ## 6.1
 
 ```{r}
+# Identify unique combinations or origin, dest, and carrier
 flights_routes <- flights |> 
   select(origin,dest,carrier) |>
   distinct() |> 
@@ -160,6 +158,7 @@ flights_routes
 ```
 
 ```{r}
+# Isolate routes that are shared by multiple airlines
 flight_routes_multiple_airlines <- flights_routes |> 
   count(origin,dest,name = "number_of_airlines") |> 
   filter(number_of_airlines>1)
@@ -170,6 +169,7 @@ flight_routes_multiple_airlines
 ## 6.2
 
 ```{r}
+# Identfiy all flights along the shared routes from Question 6.1
 flights_multiple_airlines <- flights |>
   select(origin,dest,carrier,arr_delay) |>
   group_by(origin,dest,carrier) |> 
@@ -179,6 +179,7 @@ flights_multiple_airlines
 
 
 ```{r}
+# Average flight delay for each airline along the shared routes
 average_delay <- flights_multiple_airlines |> 
   summarise(mean_delay = mean(arr_delay,na.rm=TRUE))
 average_delay
@@ -186,6 +187,7 @@ average_delay
 
 
 ```{r}
+# Added the names of each airline based on the "carrier" value from "airlines" data
 average_delay_with_airline_name <- average_delay |> 
   left_join(airlines, by = join_by(carrier))
 average_delay_with_airline_name
@@ -195,6 +197,7 @@ average_delay_with_airline_name
 
 
 ```{r}
+# The airline's with the worst average delay for each route
 max_delay <- average_delay_with_airline_name |> 
   group_by(origin,dest) |> 
   slice_max(mean_delay)
@@ -202,6 +205,7 @@ max_delay
 ```
 
 ```{r}
+# The airline's with the best average delay for each route
 min_delay <- average_delay_with_airline_name |> 
   group_by(origin,dest) |> 
   slice_min(mean_delay)
@@ -209,6 +213,7 @@ min_delay
 ```
 
 ```{r}
+# Combining the two tables of the best and worst airlines for each route
 max_and_min_delays <- max_delay |> 
   left_join(min_delay,by = join_by(origin, dest)) |> 
   rename(max_carrier = carrier.x,
@@ -223,32 +228,39 @@ max_and_min_delays
 ## 6.4
 
 ```{r}
+# Added "difference" column to measure difference between the best and worst airlines per route
 differences <- max_and_min_delays |> 
   mutate(difference = max_mean_delay - min_mean_delay) |> 
   ungroup()
 differences
 ```
+
 ```{r}
+# Identified route with biggest difference between best and worst airlines
 greatest_diff <- differences |> 
   slice_max(difference)
 greatest_diff
 ```
-
+The route as per the above is JFK to ATL.
 
 ## 6.5
 
 ```{r}
+# Filtering for only the worst airline's flights along the route with the biggest difference
 max_diff_flights <- flights |> 
   filter(origin == "JFK", dest == "ATL", carrier == "EV")
 max_diff_flights
 ```
+
 ```{r}
+# Filtering for only the best airline's flights along the route with the biggest difference
 min_diff_flights <- flights |> 
   filter(origin == "JFK", dest == "ATL", carrier == "9E")
 min_diff_flights
 ```
 
 ```{r}
+# Histograms showing the disribution of all the flights along the route by the best and worst airlines
 hist(max_diff_flights$arr_delay)
 hist(min_diff_flights$arr_delay)
 ```
@@ -261,6 +273,7 @@ Having only a single flight results in a very high risk of an outlier skewing th
 # Question 7
 
 ```{r}
+# Importing Question 7 code into "data" object
 data <- structure(list(id = c("id_1", "id_2", "id_3", "id_4", "id_5", 
 "id_6", "id_7", "id_8", "id_9", "id_10", "id_11", "id_12", "id_13", 
 "id_14", "id_15", "id_16", "id_17", "id_18", "id_19", "id_20", 
@@ -361,27 +374,26 @@ NA, 77, 80, 115, 85, 88, 109, NA, 71, 90, 94, 91, 87, 113, 93,
 ```
 
 ```{r}
+# Overview of the data
 data
 ```
 
-```{r}
-if (!requireNamespace("remotes", quietly = TRUE)) {
-  install.packages("remotes")
-}
-remotes::install_github("SATVILab/UtilsDataRSV")
-```
 
 ```{r}
+# Viewing unique values in each column
 UtilsDataRSV::view_cols(data)
 ```
 
-From the above we can see that the columns that contain missinging values include columns "height and "glucose".
+From the above we can see that the columns that contain missing values include columns "height and "glucose".
 
-The column "gender" has one entry has a typo, as it says "femal" instead of "female". Additonaly, the "disease_status" column has one entry that has "Healthy" with a capital "H" whilst the other entries are "healthy" with a lowercase "h".
+The column "gender" has one entry has a typo, as it says "femal" instead of "female". Additionally, the "disease_status" column has one entry that has "Healthy" with a capital "H" whilst the other entries are "healthy" with a lowercase "h".
+
+Most columns that contain text are all lowercase, except for columns "region:" which all entries start with a capital letter, like "North" for example, and the "education" column, which has capitals in "PhD" entries.
 
 The "id" column values all include the text "id_" which results in the column being formatted as "character" and not as "integer". If you were to sort the data by the ID column the rows are not in the order you'd expect. As illustrated below, you can see the first row is "id_1" but then it jumps to "id_10" instead of "id_2".
 
 ```{r}
+# Sorting data by the "id" column
 class(data$id)
 data |> arrange(id)
 ```
