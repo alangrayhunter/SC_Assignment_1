@@ -87,6 +87,8 @@ summary(lm)
 ```
 
 ```{r}
-# B_hat coefficents
+# B_hat coefficients
 lm$coefficients
 ```
+
+Here we have confirmed that B0 = -17.579095 and B1 = 3.932409.

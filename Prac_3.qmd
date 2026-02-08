@@ -1,0 +1,13 @@
+---
+title: "Practical 3"
+format: html
+---
+
+## Question 4
+
+```{r}
+intervals <- seq(-2,2,0.001)
+plot(sin(intervals),type="l")
+```
+
+## Question 5
