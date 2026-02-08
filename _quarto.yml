@@ -14,6 +14,8 @@ website:
 book:
   chapters: 
     - index.qmd
+    - Prac_1.qmd
+    - Prac_3.qmd
     - Prac_4.qmd
     
 format:

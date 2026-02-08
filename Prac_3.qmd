@@ -3,6 +3,13 @@ title: "Practical 3"
 format: html
 ---
 
+```{r}
+# Import car library for question 5, without output
+#| output: false
+library(car)
+```
+
+
 ## Question 4
 
 ```{r}
@@ -11,3 +18,60 @@ plot(sin(intervals),type="l")
 ```
 
 ## Question 5
+
+```{r}
+# Generating the 1000 t-values
+set.seed(100)
+t.vals <- rt(1000,1)
+sorted.t.vals <- sort(t.vals)
+plot(sorted.t.vals)
+```
+
+QQ-plot, solution should look like:
+
+```{r}
+qqPlot(sorted.t.vals, envelope = 0.95, ylim = c(-5, 5))
+```
+
+```{r}
+# Generating a normally distributed data set to use as theoretical quantile values
+set.seed(100)
+normal_data <- rnorm(1000)
+sorted_normal_data <- sort(normal_data)
+plot(sorted_normal_data)
+```
+```{r}
+# creating matrix to simulate more normal data
+normal_data_matrix <- matrix(rnorm(1000*1000), nrow = 1000, ncol = 1000)
+```
+
+```{r}
+# found upper and lower probabilty bands of the envelop
+sorted_normal_data_matrix <- t(apply(normal_data_matrix,1,sort))
+upper_ci <- matrix(nrow = 1000)
+lower_ci <- matrix(nrow = 1000)
+for (i in 1:1000){
+  upper_ci[i]= quantile(sorted_normal_data_matrix[,i],0.975)
+}
+for (i in 1:1000){
+  lower_ci[i]= quantile(sorted_normal_data_matrix[,i],0.025)
+}
+```
+
+```{r}
+# Created QQ Plot with envelope
+plot(sorted_normal_data, sorted.t.vals,
+     main = "QQ Plot with Envelope",
+     xlim = c(-4, 4),
+     ylim = c(-5, 5)
+     )
+lines(sorted_normal_data, upper_ci, col = "red")
+lines(sorted_normal_data, lower_ci, col = "red")
+abline(0,1,col="blue")
+```
+
+```{r}
+# Comparison to qqPlot
+qqPlot(sorted.t.vals, envelope = 0.95, ylim = c(-5, 5))
+```
+
