@@ -177,5 +177,47 @@
     "title": "Practical 1",
     "section": "",
     "text": "# Load airquality data\nairquality &lt;- airquality\nclass(airquality)\n\n[1] \"data.frame\"\n\n\n\n# which returns the indices which meet a certain condition\na &lt;- c()\nfor (col in 1:ncol(airquality)){\n  a &lt;- c(a, which(is.na(airquality[, col])))\n}\na &lt;- sort(unique(a))\na\n\n [1]   5   6  10  11  25  26  27  32  33  34  35  36  37  39  42  43  45  46  52\n[20]  53  54  55  56  57  58  59  60  61  65  72  75  83  84  96  97  98 102 103\n[39] 107 115 119 150\n\n\nThe above are all the rows that contain “na” values.\nAlternatively, the same can be achieved by finding all rows that are NOT all non-na values:\n\n# complete.cases provides a boolean for whether the whole observation is NA free\nb &lt;- which(!complete.cases(airquality))\nprint(b)\n\n [1]   5   6  10  11  25  26  27  32  33  34  35  36  37  39  42  43  45  46  52\n[20]  53  54  55  56  57  58  59  60  61  65  72  75  83  84  96  97  98 102 103\n[39] 107 115 119 150"
+  },
+  {
+    "objectID": "SC3-StatComputing-Intro.html",
+    "href": "SC3-StatComputing-Intro.html",
+    "title": "Introduction to Statistical Computing",
+    "section": "",
+    "text": "Write a function to calculate the error-sums-of-squares (SSE) for the following problem:\n\n?stackloss\n\nThese are data from a chemical plant, 21 days of operation, to produce nitric acid from ammonia. Higher stackloss means that more ammonia is lost / wasted.\nYou want to fit a linear regression model to these data with air flow as the explanatory varialbe and stackloss as the response. lm() is not available.\nWrite a function that will calculate SSE. The first argument should be a parameter vector, the other arguments should take response and explanatory variables.\nShow that your function works correctly."
+  },
+  {
+    "objectID": "SC3-StatComputing-Intro.html#sse",
+    "href": "SC3-StatComputing-Intro.html#sse",
+    "title": "Introduction to Statistical Computing",
+    "section": "",
+    "text": "Write a function to calculate the error-sums-of-squares (SSE) for the following problem:\n\n?stackloss\n\nThese are data from a chemical plant, 21 days of operation, to produce nitric acid from ammonia. Higher stackloss means that more ammonia is lost / wasted.\nYou want to fit a linear regression model to these data with air flow as the explanatory varialbe and stackloss as the response. lm() is not available.\nWrite a function that will calculate SSE. The first argument should be a parameter vector, the other arguments should take response and explanatory variables.\nShow that your function works correctly."
+  },
+  {
+    "objectID": "SC3-StatComputing-Intro.html#simulate-from-pmf",
+    "href": "SC3-StatComputing-Intro.html#simulate-from-pmf",
+    "title": "Introduction to Statistical Computing",
+    "section": "2 Simulate from PMF",
+    "text": "2 Simulate from PMF\nSimulate 1000 values from the following PMF: \\(P(X = a) = 0.2, P(X = b) = 0.5, P(X = c) = 0.3\\), else 0."
+  },
+  {
+    "objectID": "SC3-StatComputing-Intro.html#likelihood",
+    "href": "SC3-StatComputing-Intro.html#likelihood",
+    "title": "Introduction to Statistical Computing",
+    "section": "3 Likelihood",
+    "text": "3 Likelihood\nGenerate 1000 values from a Poisson distribution with rate parameter 2. Write a function for the likelihood. Evaluate at \\(\\lambda = 2\\). You can use dpois()."
+  },
+  {
+    "objectID": "SC3-StatComputing-Intro.html#plot-curve-function",
+    "href": "SC3-StatComputing-Intro.html#plot-curve-function",
+    "title": "Introduction to Statistical Computing",
+    "section": "4 Plot curve / function",
+    "text": "4 Plot curve / function\nPlot the function \\(f(x) = \\sin(x)\\) for \\(x \\in [-2, 2]\\)."
+  },
+  {
+    "objectID": "SC3-StatComputing-Intro.html#qq-plot",
+    "href": "SC3-StatComputing-Intro.html#qq-plot",
+    "title": "Introduction to Statistical Computing",
+    "section": "5 QQ-plot",
+    "text": "5 QQ-plot\nGenerate 1000 values from a \\(t\\)-distribution with 1 degree of freedom.\nConstruct a QQ-plot with 95% probability bands (envelopes) to check whether the above values come from a standard normal distribution. You can only use use rnorm(), but not qnorm, dnorm, pnorm, or R’s qqplot functions.\nCheck with:\n\nlibrary(car)\nqqPlot(x, envelope = 0.95, ylim = c(-5, 5))"
   }
 ]
