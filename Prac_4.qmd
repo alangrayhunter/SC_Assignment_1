@@ -120,10 +120,22 @@ flights_dep_delay_wide
 
 #Question 5
 ```{r}
-
+flights_arrival_times <- flights |> 
+  select(dep_delay,arr_delay) |> 
+  filter(dep_delay > 0)|>
+  filter(arr_delay <= 0)
+flights_arrival_times
 ```
 
 
+```{r}
+prop_late_but_on_time <- flights |>
+  summarise(
+    proportion = mean(dep_delay > 0 & arr_delay <= 0, na.rm = TRUE)
+  )
+
+prop_late_but_on_time
+```
 
 
 
