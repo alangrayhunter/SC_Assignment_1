@@ -1,19 +1,16 @@
 project:
-  type: site
-  title: "Alan Hunter - HNTALA001"
+  type: book
+  title: "Statistical Computing - Assignment 1"
   output-dir: _site
 
-website:
-  navbar:
-    left:
-      - href: index.qmd
-        text: Home
-      - href: Prac_1.qmd
-        text: Practical 1
-      - href: Prac_3.qmd
-        text: Practical 3
-      - href: Prac_4.qmd
-        text: Practical 4
+book:
+  title: "Statistical Computing - Assignment 1"
+  chapters: 
+    - index.qmd
+    - Prac_1.qmd
+    - Prac_3.qmd
+    - Prac_4.qmd
+
 
 format:
   html:
@@ -21,3 +18,4 @@ format:
     toc-depth: 3
     toc-location: left
     theme: cosmo
+    number-sections: false

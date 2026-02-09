@@ -1,10 +1,6 @@
 ---
 title: "Index"
 format: html
----
-
----
-title: "Statistical Computing - Assignment 1"
 author: "Alan Hunter - HNTALA001"
 date: "February 2026"
 ---
